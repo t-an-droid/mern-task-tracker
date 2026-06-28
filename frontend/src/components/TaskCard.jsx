@@ -9,13 +9,20 @@ const TaskCard = ({ task }) => {
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description);
   const [editCategory, setEditCategory] = useState(task.category);
-  const [editDueDate, setEditDueDate] = useState(
-    task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''
-  );
+  
+  const parseSafeDate = (dVal) => {
+    if (!dVal) return '';
+    try {
+      const parsed = new Date(dVal);
+      return isNaN(parsed.getTime()) ? '' : parsed.toISOString().split('T')[0];
+    } catch {
+      return '';
+    }
+  };
+
+  const [editDueDate, setEditDueDate] = useState(parseSafeDate(task.dueDate));
   const [editPriority, setEditPriority] = useState(task.priority);
   const [validationError, setValidationError] = useState('');
-
-  // Determine if task is overdue
   const isOverdue = () => {
     if (!task.dueDate || task.status === 'completed') return false;
     const today = new Date();
@@ -54,17 +61,15 @@ const TaskCard = ({ task }) => {
       setValidationError('');
     }
   };
-
   const handleCancel = () => {
     setEditTitle(task.title);
     setEditDescription(task.description);
     setEditCategory(task.category);
-    setEditDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
+    setEditDueDate(parseSafeDate(task.dueDate));
     setEditPriority(task.priority);
     setValidationError('');
     setIsEditing(false);
   };
-
   if (isEditing) {
     return (
       <div className="card" style={{ borderLeft: '4px solid var(--brand-primary)' }}>

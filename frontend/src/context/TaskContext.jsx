@@ -47,10 +47,17 @@ export const TaskProvider = ({ children }) => {
       if (filters.sortOrder) params.sortOrder = filters.sortOrder;
 
       const response = await axios.get(API_BASE_URL, { params });
-      setTasks(response.data);
+      if (Array.isArray(response.data)) {
+        setTasks(response.data);
+      } else {
+        console.error('API response is not an array:', response.data);
+        setTasks([]);
+        setError('Server returned invalid data format');
+      }
     } catch (err) {
       console.error('Error fetching tasks:', err);
       setError(err.response?.data?.message || 'Failed to fetch tasks from server');
+      setTasks([]);
     } finally {
       setLoading(false);
     }
