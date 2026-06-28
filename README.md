@@ -117,7 +117,7 @@ All endpoints return standardized JSON formatting.
 
 ## Deployment Guide (Render & Vercel)
 
-For a free public deployment, we recommend hosting the **Backend** on **Render** (or Railway) and the **Frontend** on **Vercel** (or Netlify).
+Since both the **frontend** and **backend** live in a **single repository (monorepo)**, you only need to push this single repository to GitHub. You will link this exact same GitHub repository to both Render (for the backend) and Vercel (for the frontend). The platforms will automatically deploy the correct folders based on the `Root Directory` configurations specified below.
 
 ### 1. Database Setup (MongoDB Atlas)
 1. Register for a free account on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
